@@ -53,6 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/appointments/me").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/appointments/**").authenticated() // <-- ZMIANA
                         .requestMatchers(HttpMethod.DELETE, "/api/appointments/**").authenticated() // <-- ZMIANA
+                        .requestMatchers(HttpMethod.GET, "/api/doctors/*/appointments").permitAll()
 
                         // Endpoint tylko dla ADMINA - bez zmian
                         .requestMatchers("/api/appointments/all").hasRole("ADMIN")
@@ -73,7 +74,7 @@ public class SecurityConfig {
         CorsConfiguration configuration = new CorsConfiguration();
 
         // Ustawiamy dozwolone źródło na adres Twojego serwera deweloperskiego React
-        configuration.setAllowedOrigins(List.of("http://localhost:3000"));
+        configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5173", "http://localhost:5174"));
 
         // W przyszłości, gdy wdrożysz frontend, dodasz tutaj jego domenę, np.:
         // configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://twoja-super-aplikacja.com"));

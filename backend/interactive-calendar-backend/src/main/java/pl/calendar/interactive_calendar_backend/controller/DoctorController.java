@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.calendar.interactive_calendar_backend.dto.ApiResponse;
+import pl.calendar.interactive_calendar_backend.dto.AppointmentDto;
 import pl.calendar.interactive_calendar_backend.dto.DoctorDto;
 import pl.calendar.interactive_calendar_backend.service.AppointmentService;
 import pl.calendar.interactive_calendar_backend.service.DoctorService;
@@ -26,6 +27,17 @@ public class DoctorController {
     public ResponseEntity<ApiResponse<List<DoctorDto>>> getAllDoctors() {
         List<DoctorDto> doctors = doctorService.getAllDoctors();
         ApiResponse<List<DoctorDto>> response = new ApiResponse<>(true, "Got a list of doctors", doctors);
+        return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/{doctorId}/appointments") // NOWY ENDPOINT
+    public ResponseEntity<ApiResponse<List<AppointmentDto>>> getAppointments(
+            @PathVariable Long doctorId,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime start,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime end
+    ) {
+        List<AppointmentDto> appointments = appointmentService.getPublicAppointments(doctorId, start, end);
+        ApiResponse<List<AppointmentDto>> response = new ApiResponse<>(true, "Pobrano zajęte terminy", appointments);
         return ResponseEntity.ok(response);
     }
 
