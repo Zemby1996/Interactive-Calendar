@@ -1,12 +1,18 @@
 services:
   - type: web
     name: kalendarz-backend
-    # UWAGA: Zamiast 'runtime', 'buildCommand', itd., teraz określamy ustawienia dla Dockera
-    dockerfilePath: backend/interactive-calendar-backend/Dockerfile
+    runtime: docker   # <-- TO JEST KLUCZOWA, BRAKUJĄCA LINIA
+    repo: https://github.com/Zemby1996/Interactive-Calendar 
     plan: free
     autoDeploy: true
+    branch: main
+
+    # Ustawienia dla budowania z Dockerfile
+    # Ta ścieżka mówi Renderowi, gdzie w repozytorium znajduje się instrukcja budowy obrazu
+    dockerfilePath: backend/interactive-calendar-backend/Dockerfile
     
-    # Zmienne środowiskowe nadal ustawiasz w panelu Render w zakładce 'Environment'
+    # Zmienne środowiskowe, które ustawiasz w panelu Render,
+    # ale jedna musi być zdefiniowana tutaj, aby sekcja istniała.
     envVars:
       - key: SERVER_PORT
-        value: 10000
+        value: 10000 # Render komunikuje się z Twoim kontenerem na tym porcie
