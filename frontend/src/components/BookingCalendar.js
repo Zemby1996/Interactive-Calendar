@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext, useCallback } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid/index.js';
 import timeGridPlugin from '@fullcalendar/timegrid/index.js';
@@ -44,10 +44,9 @@ const BookingCalendar = () => {
     }, []);
 
     // 2. Pobieranie wizyt, gdy zmieni się wybrany lekarz lub zakres dat w kalendarzu
-    const fetchAppointments = async () => {
+    const fetchAppointments = useCallback(async () => {
         if (!selectedDoctorId || !calendarRef.current) return;
-
-        setEventsLoading(true); // Rozpoczynamy ładowanie wydarzeń
+        setEventsLoading(true);
         const calendarApi = calendarRef.current.getApi();
         const start = calendarApi.view.activeStart.toISOString();
         const end = calendarApi.view.activeEnd.toISOString();
@@ -55,26 +54,25 @@ const BookingCalendar = () => {
             const response = await getPublicAppointments(selectedDoctorId, start, end);
             const formattedEvents = response.data.data.map(app => ({
                 id: app.id,
-                title: app.patientFirstName,
+                title: `🔒 Zajęty`,
                 start: app.appointmentStart,
                 end: app.appointmentEnd,
-                backgroundColor: '#d9534f',
-                borderColor: '#d43f3a'
+                classNames: ['busy-event']
             }));
             setEvents(formattedEvents);
         } catch (error) {
             console.error("Błąd podczas pobierania wizyt:", error);
         } finally {
-            setEventsLoading(false); // Kończymy ładowanie wydarzeń
+            setEventsLoading(false);
         }
-    };
+    }, [selectedDoctorId]);
 
     // Uruchom pobieranie wizyt, gdy zmieni się lekarz
     useEffect(() => {
         if (!doctorsLoading) { // Uruchom pobieranie wizyt dopiero po załadowaniu lekarzy
             fetchAppointments();
         }
-    }, [selectedDoctorId, doctorsLoading]);
+    }, [ fetchAppointments, doctorsLoading]);
 
 
     // 3. Obsługa zdarzeń kalendarza
@@ -83,12 +81,14 @@ const BookingCalendar = () => {
     };
 
     const handleDateClick = (arg) => {
-        // Obliczamy czas końcowy (np. 30 minut po kliknięciu)
+        if (new Date(arg.date) < new Date()) {
+            toast.warn("Nie można rezerwować wizyt w przeszłości.");
+            return;
+        }
         const endDate = new Date(arg.date.getTime() + 30 * 60000);
         setSelectedSlot({ start: arg.date, end: endDate });
         setIsModalOpen(true);
     };
-
 
     const handleDatesSet = (dateInfo) => {
         fetchAppointments();
@@ -142,6 +142,10 @@ const BookingCalendar = () => {
                 ref={calendarRef}
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="timeGridWeek"
+                height="auto"
+                allDaySlot={false}
+                loading={eventsLoading}
+
                 headerToolbar={{
                     left: 'prev,next today',
                     center: 'title',
@@ -160,6 +164,10 @@ const BookingCalendar = () => {
                 allDayText='Cały dzień'
                 slotMinTime="08:00:00" // Ograniczenie godzin wyświetlania
                 slotMaxTime="18:00:00"
+
+                selectAllow={(selectInfo) => {
+                    return new Date(selectInfo.start) > new Date(); // Pozwól na zaznaczenie tylko, jeśli data początkowa jest w przyszłości
+                }}
             />
             <BookingModal
                 isOpen={isModalOpen}

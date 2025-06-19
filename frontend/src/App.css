@@ -3,6 +3,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+.app-container {
+    max-width: 1200px; /* Maksymalna szerokość treści. Możesz ją zmniejszyć lub zwiększyć. */
+    margin: 0 auto;   /* To centruje kontener na stronie. */
+    padding: 20px;     /* Wewnętrzne odstępy, aby treść nie dotykała krawędzi. */
+}
+
 .App {
   padding: 20px;
 }
@@ -22,6 +28,8 @@ body {
   border-radius: 5px;
   border: 1px solid #ccc;
 }
+
+
 
 /* Poprawki dla FullCalendar */
 .fc {

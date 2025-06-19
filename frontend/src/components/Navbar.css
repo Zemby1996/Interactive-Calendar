@@ -7,6 +7,11 @@
     padding: 10px 20px;
     border-bottom: 1px solid #dee2e6;
     margin-bottom: 20px;
+
+    position: sticky;
+    top: 0;
+    z-index: 1000; /* Upewnia się, że nawigacja jest zawsze na wierzchu */
+    width: 100%;
 }
 
 .navbar-brand a {

@@ -7,12 +7,15 @@ import { pl } from 'date-fns/locale';
 import './MyBookingsPage.css';
 import { toast } from 'react-toastify';
 import Spinner from '../components/Spinner';
+import EditBookingModal from '../components/EditBookingModal';
 
 const MyBookingsPage = () => {
     const [bookings, setBookings] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const { auth } = useContext(AuthContext);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [editingBooking, setEditingBooking] = useState(null);
 
     // 1. Efekt, który pobiera wizyty użytkownika po załadowaniu strony
     useEffect(() => {
@@ -51,6 +54,38 @@ const MyBookingsPage = () => {
         }
     };
 
+    const handleOpenEditModal = (booking) => {
+        setEditingBooking(booking); // Zapisujemy, którą wizytę edytujemy
+        setIsEditModalOpen(true);
+    };
+
+    const handleUpdateBooking = async (updatedNotes) => {
+        if (!editingBooking) return;
+
+        const appointmentData = {
+            appointmentStart: editingBooking.appointmentStart,
+            appointmentEnd: editingBooking.appointmentEnd,
+            doctorId: editingBooking.doctorId,
+            notes: updatedNotes,
+        };
+
+        try {
+            await updateAppointment(editingBooking.id, appointmentData);
+            toast.success("Wizyta została pomyślnie zaktualizowana!");
+
+            // Aktualizujemy listę wizyt w stanie, aby zmiana była widoczna od razu
+            setBookings(prevBookings => prevBookings.map(b =>
+                b.id === editingBooking.id ? { ...b, notes: updatedNotes } : b
+            ));
+
+            setIsEditModalOpen(false); // Zamykamy modal
+            setEditingBooking(null); // Czyścimy stan edycji
+        } catch (err) {
+            toast.error("Nie udało się zaktualizować wizyty.");
+        }
+    };
+
+
 
     // 3. Logika renderowania komponentu
     if (isLoading) {
@@ -82,11 +117,18 @@ const MyBookingsPage = () => {
                         </div>
                         <div className="booking-card-actions">
                             <button className="action-button edit-button">Zmień Termin</button>
+                            <button onClick={() => handleOpenEditModal(booking)} className="action-button edit-button">Edytuj Notatki</button>
                             <button onClick={() => handleCancelBooking(booking.id)} className="action-button cancel-button">Anuluj Wizytę</button>
                         </div>
                     </div>
                 ))}
             </div>
+            <EditBookingModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                bookingToEdit={editingBooking}
+                onUpdate={handleUpdateBooking}
+            />
         </div>
     );
 };

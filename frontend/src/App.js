@@ -44,18 +44,20 @@ function App() {
           onLoginClick={() => openModal('login')}
           onRegisterClick={() => openModal('register')}
         />
-        <main>
-          {/* 2. Definiujemy, gdzie mają się renderować nasze strony */}
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/moje-wizyty" element={<MyBookingsPage />} />
+        <div className="app-container">
+          <main>
+            {/* 2. Definiujemy, gdzie mają się renderować nasze strony */}
+            <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/moje-wizyty" element={<MyBookingsPage />} />
 
-            <Route element={<ProtectedRoute />}>
-              <Route path="/panel-admina" element={<AdminDashboardPage />} />
-            </Route>
+              <Route element={<ProtectedRoute />}>
+                <Route path="/panel-admina" element={<AdminDashboardPage />} />
+              </Route>
 
-          </Routes>
-        </main>
+            </Routes>
+          </main>
+        </div>
         <AuthModal
           isOpen={isAuthModalOpen}
           onClose={closeModal}

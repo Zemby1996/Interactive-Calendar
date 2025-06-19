@@ -73,19 +73,13 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        // Ustawiamy dozwolone źródło na adres Twojego serwera deweloperskiego React
+
         configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5173", "http://localhost:5174"));
 
-        // W przyszłości, gdy wdrożysz frontend, dodasz tutaj jego domenę, np.:
-        // configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "https://twoja-super-aplikacja.com"));
-
-        // Dozwolone metody HTTP
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
-        // Dozwolone nagłówki
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
 
-        // Zezwolenie na wysyłanie credentials (np. ciasteczek, nagłówków autoryzacji)
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
