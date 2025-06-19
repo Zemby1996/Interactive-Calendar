@@ -105,3 +105,13 @@
 .cancel-button:hover {
     background-color: #c82333;
 }
+
+/* src/pages/MyBookingsPage.css */
+
+.booking-patient-name {
+    font-weight: 500;
+    color: #333;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #ccc;
+}

@@ -111,13 +111,18 @@ const MyBookingsPage = () => {
                             <p>{booking.doctorSpecialty}</p>
                         </div>
                         <div className="booking-card-body">
+                            
+                            {/* --- DODAJEMY TĘ LINIĘ --- */}
+                            <p className="booking-patient-name">
+                                <strong>Pacjent:</strong> {booking.patientFirstName} {booking.patientLastName}
+                            </p>
+                            
                             <p><strong>Data:</strong> {format(new Date(booking.appointmentStart), 'd MMMM yyyy', { locale: pl })}</p>
                             <p><strong>Godzina:</strong> {format(new Date(booking.appointmentStart), 'HH:mm')}</p>
                             {booking.notes && <p className="notes"><strong>Cel wizyty:</strong> {booking.notes}</p>}
                         </div>
                         <div className="booking-card-actions">
-                            <button className="action-button edit-button">Zmień Termin</button>
-                            <button onClick={() => handleOpenEditModal(booking)} className="action-button edit-button">Edytuj Notatki</button>
+                            <button className="action-button edit-button" onClick={() => handleOpenEditModal(booking)}>Edytuj Notatki</button>
                             <button onClick={() => handleCancelBooking(booking.id)} className="action-button cancel-button">Anuluj Wizytę</button>
                         </div>
                     </div>
