@@ -1,0 +1,19 @@
+services:
+  # Definicja naszej usługi backendowej
+  - type: web
+    name: kalendarz-backend # Możesz wybrać inną nazwę dla swojej usługi
+    runtime: java          # <-- JAWNIE I BEZPOŚREDNIO MÓWIMY, ŻE TO JEST JAVA
+    repo: https://github.com/Zemby1996/Interactive-Calendar/tree/main/backend/interactive-calendar-backend # <-- ZMIEŃ NA ADRES URL TWOJEGO REPOZYTORIUM
+    plan: free
+
+    # Ustawienia budowania i uruchamiania
+    rootDir: backend/interactive-calendar-backend     # <-- UPEWNIJ SIĘ, ŻE TA ŚCIEŻKA JEST POPRAWNA (do folderu z pom.xml)
+    buildCommand: "./mvnw clean package -DskipTests"
+    startCommand: "java -jar target/interactive-calendar-backend-0.0.1-SNAPSHOT.jar" # <-- SPRAWDŹ DOKŁADNĄ NAZWĘ PLIKU .jar W FOLDERZE 'target'
+
+    # Zmienne środowiskowe nadal ustawiasz w panelu Render w zakładce 'Environment'
+    # dla bezpieczeństwa, ale jedna musi być zdefiniowana tutaj, aby sekcja istniała.
+    envVars:
+      - key: SERVER_PORT
+        value: 10000 # Render wymaga, aby aplikacje nasłuchiwały na porcie 10000services:
+  
