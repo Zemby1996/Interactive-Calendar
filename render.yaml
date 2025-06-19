@@ -1,18 +1,18 @@
 services:
   - type: web
     name: kalendarz-backend
-    runtime: docker   # <-- TO JEST KLUCZOWA, BRAKUJĄCA LINIA
-    repo: https://github.com/Zemby1996/Interactive-Calendar 
+    runtime: docker
+    repo: https://github.com/Zemby1996/Interactive-Calendar
     plan: free
     autoDeploy: true
     branch: main
 
+    # --- POPRAWKA JEST TUTAJ ---
     # Ustawienia dla budowania z Dockerfile
-    # Ta ścieżka mówi Renderowi, gdzie w repozytorium znajduje się instrukcja budowy obrazu
+    dockerContext: backend/interactive-calendar-backend # <-- MÓWIMY DOCKEROWI, GDZIE MA ZACZĄĆ
     dockerfilePath: backend/interactive-calendar-backend/Dockerfile
     
-    # Zmienne środowiskowe, które ustawiasz w panelu Render,
-    # ale jedna musi być zdefiniowana tutaj, aby sekcja istniała.
+    # Sekcja envVars pozostaje bez zmian
     envVars:
       - key: SERVER_PORT
-        value: 10000 # Render komunikuje się z Twoim kontenerem na tym porcie
+        value: 10000
