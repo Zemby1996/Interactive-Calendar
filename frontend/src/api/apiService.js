@@ -4,7 +4,7 @@ import axios from 'axios';
 
 
 const apiService = axios.create({
-    baseURL: 'http://localhost:8080/api' // Upewnij się, że port jest poprawny
+    baseURL: 'https://kalendarz-backend-ca1y.onrender.com/api' // Upewnij się, że port jest poprawny
 });
 
 // Ten fragment kodu "przechwytuje" każde zapytanie WYCHODZĄCE z naszej aplikacji.
@@ -15,7 +15,7 @@ apiService.interceptors.request.use(
         
         
         if (token) {
-            config.headers['Authorization'] = `Bearer ${token}`;
+            config.headers['Authorization'] = `Bearer ${token}`;s
         }
         return config;
     },
