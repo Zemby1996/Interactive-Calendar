@@ -1,15 +1,12 @@
 services:
   - type: web
     name: kalendarz-backend
-    # USUWAMY LINIĘ 'runtime: java' - Render sam wykryje Javę na podstawie zawartości folderu
-    repo: https://github.com/Zemby1996/Interactive-Calendar # <-- UPEWNIJ SIĘ, ŻE TO JEST GŁÓWNY ADRES URL TWOJEGO REPOZYTORIUM
+    # UWAGA: Zamiast 'runtime', 'buildCommand', itd., teraz określamy ustawienia dla Dockera
+    dockerfilePath: backend/interactive-calendar-backend/Dockerfile
     plan: free
+    autoDeploy: true
     
-    # Ustawienia budowania i uruchamiania
-    rootDir: backend/interactive-calendar-backend # <-- TA ŚCIEŻKA JEST TERAZ NAJWAŻNIEJSZA
-    buildCommand: "./mvnw clean package -DskipTests"
-    startCommand: "java -jar target/interactive-calendar-backend-0.0.1-SNAPSHOT.jar" # Pamiętaj, aby sprawdzić, czy ta nazwa pliku .jar jest poprawna
-    
+    # Zmienne środowiskowe nadal ustawiasz w panelu Render w zakładce 'Environment'
     envVars:
       - key: SERVER_PORT
-        value: 10000 # Render wymaga, aby aplikacje nasłuchiwały na porcie 10000
+        value: 10000
