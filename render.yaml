@@ -1,19 +1,15 @@
 services:
-  # Definicja naszej usługi backendowej
   - type: web
-    name: kalendarz-backend # Możesz wybrać inną nazwę dla swojej usługi
-    runtime: java          # <-- JAWNIE I BEZPOŚREDNIO MÓWIMY, ŻE TO JEST JAVA
-    repo: https://github.com/Zemby1996/Interactive-Calendar/tree/main/backend/interactive-calendar-backend # <-- ZMIEŃ NA ADRES URL TWOJEGO REPOZYTORIUM
+    name: kalendarz-backend
+    # USUWAMY LINIĘ 'runtime: java' - Render sam wykryje Javę na podstawie zawartości folderu
+    repo: https://github.com/Zemby1996/Interactive-Calendar # <-- UPEWNIJ SIĘ, ŻE TO JEST GŁÓWNY ADRES URL TWOJEGO REPOZYTORIUM
     plan: free
-
+    
     # Ustawienia budowania i uruchamiania
-    rootDir: backend/interactive-calendar-backend     # <-- UPEWNIJ SIĘ, ŻE TA ŚCIEŻKA JEST POPRAWNA (do folderu z pom.xml)
+    rootDir: backend/interactive-calendar-backend # <-- TA ŚCIEŻKA JEST TERAZ NAJWAŻNIEJSZA
     buildCommand: "./mvnw clean package -DskipTests"
-    startCommand: "java -jar target/interactive-calendar-backend-0.0.1-SNAPSHOT.jar" # <-- SPRAWDŹ DOKŁADNĄ NAZWĘ PLIKU .jar W FOLDERZE 'target'
-
-    # Zmienne środowiskowe nadal ustawiasz w panelu Render w zakładce 'Environment'
-    # dla bezpieczeństwa, ale jedna musi być zdefiniowana tutaj, aby sekcja istniała.
+    startCommand: "java -jar target/interactive-calendar-backend-0.0.1-SNAPSHOT.jar" # Pamiętaj, aby sprawdzić, czy ta nazwa pliku .jar jest poprawna
+    
     envVars:
       - key: SERVER_PORT
-        value: 10000 # Render wymaga, aby aplikacje nasłuchiwały na porcie 10000services:
-  
+        value: 10000 # Render wymaga, aby aplikacje nasłuchiwały na porcie 10000
