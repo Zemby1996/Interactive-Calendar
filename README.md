@@ -80,9 +80,6 @@ A web application that allows users to view available dates and book appointment
 * **Backend**: Hosted on Render
 * **Frontend**: Hosted on Netlify
 
-## 🤝 Contributing
-
-Feel free to fork the repository and submit pull requests.
 
 ## 📄 License
 
